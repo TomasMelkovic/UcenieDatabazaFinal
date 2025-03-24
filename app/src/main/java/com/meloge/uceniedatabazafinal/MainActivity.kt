@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    transactionViewModel.insertTransaction(Transaction(amount = 10.0, description = "Test"))
+                    transactionViewModel.insertTransaction(Transaction(amount = 20.0, description = "Test2"))
                     transactionViewModel.getAllTransactions()
                     Greeting("Android")
                 }
