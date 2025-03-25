@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.meloge.uceniedatabazafinal.data.model.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
@@ -11,5 +12,9 @@ interface TransactionDao {
     suspend fun insertTransaction(transaction: Transaction)
 
     @Query("SELECT * FROM transactions")
-    suspend fun getAllTransactions(): List<Transaction>
+    fun getAllTransactions(): Flow<List<Transaction>>
+
+    @Query("DELETE FROM transactions")
+    suspend fun deleteAllTransactions()
+
 }

@@ -9,17 +9,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import com.meloge.uceniedatabazafinal.data.model.Transaction
+import com.meloge.uceniedatabazafinal.ui.screen.TransactionListScreen
 import com.meloge.uceniedatabazafinal.ui.theme.UcenieDatabazaFinalTheme
 import com.meloge.uceniedatabazafinal.ui.viewmodel.TransactionViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val transactionViewModel: TransactionViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            //transactionViewModel.deleteAllTransactions()
+            transactionViewModel.insertTransaction(Transaction(amount = 10.0, description = "Test"))
+        }
+
         setContent {
             UcenieDatabazaFinalTheme {
                 // A surface container using the 'background' color from the theme
@@ -27,9 +38,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    transactionViewModel.insertTransaction(Transaction(amount = 20.0, description = "Test2"))
-                    transactionViewModel.getAllTransactions()
-                    Greeting("Android")
+                    val transactions by transactionViewModel.transactions.collectAsState()
+                    TransactionListScreen(
+                        transactions = transactions,
+                        onDeleteAllTransactions = {
+                            lifecycleScope.launch {
+                                transactionViewModel.deleteAllTransactions()
+                            }
+                        }
+                    )
                 }
             }
         }

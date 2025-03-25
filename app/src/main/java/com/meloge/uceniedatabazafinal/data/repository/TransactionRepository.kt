@@ -1,8 +1,8 @@
 package com.meloge.uceniedatabazafinal.data.repository
 
-import android.util.Log
 import com.meloge.uceniedatabazafinal.data.dao.TransactionDao
 import com.meloge.uceniedatabazafinal.data.model.Transaction
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TransactionRepository @Inject constructor(
@@ -11,11 +11,11 @@ class TransactionRepository @Inject constructor(
     suspend fun insertTransaction(transaction: Transaction) {
         transactionDao.insertTransaction(transaction)
     }
+    suspend fun deleteAllTransactions() {
+        transactionDao.deleteAllTransactions()
+    }
 
-    suspend fun getAllTransactions() {
-        val transactions = transactionDao.getAllTransactions()
-        transactions.forEach {
-            Log.d("TransactionRepository", "Transaction: $it")
-        }
+    fun getAllTransactions(): Flow<List<Transaction>> {
+        return transactionDao.getAllTransactions()
     }
 }
