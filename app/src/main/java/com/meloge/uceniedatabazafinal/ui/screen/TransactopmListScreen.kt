@@ -12,9 +12,13 @@ import com.meloge.uceniedatabazafinal.data.model.Transaction
 @Composable
 fun TransactionListScreen(
     transactions: List<Transaction>,
-    onDeleteAllTransactions: () -> Unit
+    onDeleteAllTransactions: () -> Unit,
+    onNavigateToAddTransaction: () -> Unit
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
+        Button(onClick = { onNavigateToAddTransaction() }) {
+            Text(text = "Add Transaction")
+        }
         Button(onClick = { onDeleteAllTransactions() }) {
             Text(text = "Delete All Transactions")
         }
