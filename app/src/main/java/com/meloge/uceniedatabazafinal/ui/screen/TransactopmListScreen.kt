@@ -13,9 +13,11 @@ import com.meloge.uceniedatabazafinal.data.model.Transaction
 fun TransactionListScreen(
     transactions: List<Transaction>,
     onDeleteAllTransactions: () -> Unit,
-    onNavigateToAddTransaction: () -> Unit
+    onNavigateToAddTransaction: () -> Unit,
+    totalAmount: Double
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
+        Text(text = "Total Amount: $totalAmount")
         Button(onClick = { onNavigateToAddTransaction() }) {
             Text(text = "Add Transaction")
         }
@@ -33,5 +35,6 @@ fun TransactionItem(transaction: Transaction) {
     Column(modifier = Modifier.padding(bottom = 8.dp)) {
         Text(text = "Amount: ${transaction.amount}")
         Text(text = "Description: ${transaction.description}")
+        Text(text = "Date: ${transaction.date}")
     }
 }

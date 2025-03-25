@@ -44,17 +44,11 @@ class MainActivity : ComponentActivity() {
                 ) {
                     var showAddTransactionScreen by remember { mutableStateOf(false) }
                     val transactions by transactionViewModel.transactions.collectAsState()
+                    val totalAmount by transactionViewModel.totalAmount.collectAsState()
 
                     if (showAddTransactionScreen) {
                         AddTransactionScreen(onAddTransaction = { amount, description ->
-                            lifecycleScope.launch {
-                                transactionViewModel.insertTransaction(
-                                    Transaction(
-                                        amount = amount,
-                                        description = description
-                                    )
-                                )
-                            }
+                            transactionViewModel.insertTransaction(amount, description)
                             showAddTransactionScreen = false
                         })
                     } else {
@@ -67,7 +61,8 @@ class MainActivity : ComponentActivity() {
                             },
                             onNavigateToAddTransaction = {
                                 showAddTransactionScreen = true
-                            }
+                            },
+                            totalAmount = totalAmount
                         )
                     }
                 }
